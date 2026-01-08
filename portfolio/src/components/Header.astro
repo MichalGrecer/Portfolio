@@ -1,0 +1,131 @@
+---
+import { SITE_TITLE } from '../consts';
+
+const navLinks = [
+  { href: "/", label: "Strona główna" },
+  { href: "/projects/", label: "Projekty" },
+  { href: "/experience", label: "Doświadczenie" },
+  { href: "/skills", label: "Umiejętności" },
+  { href: "/contact", label: "Kontakt" },
+];
+---
+
+<header class="sticky top-0 z-[100] w-full border-b border-zinc-100/50 dark:border-zinc-900/50 bg-white/80 dark:bg-[#050505]/80 backdrop-blur-xl">
+  <nav class="max-w-5xl mx-auto px-6 h-16 sm:h-20 flex items-center justify-between">
+    
+    <a href="/" class="group flex items-center gap-2 z-[120]">
+      <div class="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-white flex items-center justify-center transition-transform group-hover:rotate-6">
+        <span class="text-white dark:text-black font-bold text-xs">M</span>
+      </div>
+      <span class="font-bold text-zinc-900 dark:text-zinc-100 tracking-tighter">
+        {SITE_TITLE}
+      </span>
+    </a>
+
+    <div class="flex items-center gap-4">
+        <div class="hidden md:flex items-center gap-8 mr-4">
+            {navLinks.slice(1).map(link => (
+                <a href={link.href} class="text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors relative group">
+                    {link.label}
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-blue-500 transition-all group-hover:w-full"></span>
+                </a>
+            ))}
+        </div>
+
+        <button id="theme-toggle" class="z-[120] p-2 text-zinc-600 dark:text-zinc-400 hover:text-blue-500 transition-colors">
+            <svg id="sun-icon" class="h-5 w-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" /></svg>
+            <svg id="moon-icon" class="h-5 w-5 block dark:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+        </button>
+
+        <button id="mobile-menu-open" class="md:hidden z-[120] p-2 text-zinc-600 dark:text-zinc-400" aria-label="Otwórz menu">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+        </button>
+    </div>
+
+    <div id="mobile-menu" class="fixed inset-0 z-[200] bg-white dark:bg-[#050505] hidden flex-col w-screen h-[100dvh]">
+      
+      <div class="flex items-center justify-between h-16 px-6 border-b border-zinc-100 dark:border-zinc-900 w-full shrink-0">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-white flex items-center justify-center">
+                <span class="text-white dark:text-black font-bold text-xs">M</span>
+            </div>
+            <span class="font-bold text-zinc-900 dark:text-zinc-100 tracking-tighter">{SITE_TITLE}</span>
+        </div>
+        <button id="mobile-menu-close" class="p-2 text-zinc-600 dark:text-zinc-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+
+      <div class="flex-1 flex flex-col items-center justify-center p-6 w-full">
+        <div class="flex flex-col items-center gap-10 w-full max-w-xs">
+          {navLinks.map((link, index) => (
+            <>
+              <a 
+                href={link.href} 
+                class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 hover:text-blue-500 transition-all text-center w-full py-2 mobile-nav-link"
+              >
+                {link.label}
+              </a>
+              {index === 0 && <div class="w-full h-px bg-zinc-100 dark:bg-zinc-900 my-2"></div>}
+            </>
+          ))}
+        </div>
+      </div>
+
+      <div class="pb-12 flex flex-col items-center shrink-0">
+        <span class="text-[10px] text-zinc-400 font-mono uppercase tracking-[0.3em]">Michał Grecer Portfolio</span>
+      </div>
+    </div>
+
+  </nav>
+</header>
+
+<script is:inline>
+  function initHeader() {
+    const openBtn = document.getElementById('mobile-menu-open');
+    const closeBtn = document.getElementById('mobile-menu-close');
+    const menu = document.getElementById('mobile-menu');
+    const body = document.body;
+
+    if (!openBtn || !closeBtn || !menu) return;
+
+    function toggleMenu(show) {
+      if (show) {
+        menu.classList.remove('hidden');
+        menu.classList.add('flex');
+        body.style.overflow = 'hidden';
+      } else {
+        menu.classList.remove('flex');
+        menu.classList.add('hidden');
+        body.style.overflow = '';
+      }
+    }
+
+    // Usuwamy stare listenery (jeśli istnieją) i dodajemy nowe
+    openBtn.onclick = () => toggleMenu(true);
+    closeBtn.onclick = () => toggleMenu(false);
+
+    // Obsługa kliknięcia w linki (zamykanie menu)
+    const links = document.querySelectorAll('.mobile-nav-link');
+    links.forEach(link => {
+      link.onclick = () => toggleMenu(false);
+    });
+
+    // Logika motywu
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+      themeBtn.onclick = () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        const newTheme = isDark ? 'light' : 'dark';
+        document.documentElement.classList.toggle('dark', newTheme === 'dark');
+        localStorage.setItem('theme', newTheme);
+      };
+    }
+  }
+
+  // Inicjalizacja przy pierwszym załadowaniu
+  initHeader();
+
+  // Re-inicjalizacja po każdej zmianie strony (ważne przy View Transitions)
+  document.addEventListener('astro:page-load', initHeader);
+</script>

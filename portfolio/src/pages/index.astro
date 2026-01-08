@@ -1,0 +1,428 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Certificates from '../components/Certificates.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { techMap } from '../data/techData'; // IMPORT CENTRALNY
+
+const projectFiles = import.meta.glob('../content/projects/*.md', {
+  eager: true,
+});
+
+const projects = Object.entries(projectFiles)
+  .map(([path, file]: any) => ({
+    slug: path.split('/').pop().replace('.md', ''),
+    data: file.frontmatter,
+    Content: file.Content,
+  }))
+  .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+
+// Wyświetlamy 4 najnowsze projekty na głównej
+const featuredProjects = projects.slice(0, 4);
+
+const techStack = [
+  { 
+    category: "IoT & Embedded", 
+    tools: [
+      { name: "C++", icon: "devicon-cplusplus-plain", color: "#00599C" },
+      { name: "ESP32", icon: "devicon-arduino-plain", color: "#E7352C" },
+      { name: "PlatformIO", color: "#f5822a", iconUrl: "https://cdn.simpleicons.org/platformio" },
+      { name: "WiringPi", color: "#666666", svg: '<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 2V4H15V2H17V4H21C21.55 4 22 4.45 22 5V21C22 21.55 21.55 22 21 22H3C2.45 22 2 21.55 2 21V5C2 4.45 2.45 4 3 4H7V2H9M11 19V15H9V19H11M15 19V15H13V19H15M7 19V15H5V19H7M19 19V15H17V19H19M7 13V9H5V13H7M11 13V9H9V13H11M15 13V9H13V13H15M19 13V9H17V13H19Z" /></svg>' },
+      { name: "Raspberry Pi", icon: "devicon-raspberrypi-plain", color: "#C51A4A" }
+    ] 
+  },
+  { 
+    category: "Backend & Scripts", 
+    tools: [
+      { name: "Python", icon: "devicon-python-plain", color: "#3776AB" },
+      { name: "Node.js", icon: "devicon-nodejs-plain", color: "#339933" },
+      { name: "Pandas", icon: "devicon-pandas-plain", color: "#150458" },
+      { name: "Google API", icon: "devicon-google-plain", color: "#4285F4" }
+    ] 
+  },
+  { 
+    category: "Frontend & Mobile", 
+    tools: [
+      { name: "React Native", icon: "devicon-react-original", color: "#61DAFB" },
+      { name: "TypeScript", icon: "devicon-typescript-plain", color: "#3178C6" },
+      { name: "JavaScript", icon: "devicon-javascript-plain", color: "#F7DF1E" },
+      { name: "Tailwind CSS", icon: "devicon-tailwindcss-original", color: "#06B6D4" }
+    ] 
+  },
+  { 
+    category: "Tools & Database", 
+    tools: [
+      { name: "Git", icon: "devicon-git-plain", color: "#F05032" },
+      { name: "Docker", icon: "devicon-docker-plain", color: "#2496ED" },
+      { name: "Linux", icon: "devicon-linux-plain", color: "#FCC624" },
+      { name: "PostgreSQL", icon: "devicon-postgresql-plain", color: "#336791" }
+    ] 
+  }
+];
+---
+
+<!doctype html>
+<html lang="pl">
+<head>
+	<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.16.0/devicon.min.css">
+    <style>
+        dialog::backdrop { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        dialog[open] { animation: fade-in 0.3s ease-out; display: flex; }
+        @keyframes fade-in { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        body.modal-open { overflow: hidden; position: fixed; width: 100%; }
+        #modal-content-container { scrollbar-gutter: stable; }
+        #modal-content-container::-webkit-scrollbar { width: 6px; background: transparent; }
+        #modal-content-container::-webkit-scrollbar-thumb { background-color: rgba(156, 163, 175, 0.5); border-radius: 10px; }
+
+        .tech-item { transition: all 0.3s ease; }
+        .tech-item:hover {
+            color: var(--hover-color) !important;
+            border-color: var(--hover-color) !important;
+            background-color: color-mix(in srgb, var(--hover-color), transparent 85%) !important;
+        }
+        .icon-mask {
+            background-color: currentColor;
+            mask-size: contain; mask-repeat: no-repeat; mask-position: center;
+            -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; -webkit-mask-position: center;
+        }
+        .tech-item svg { width: 14px; height: 14px; fill: currentColor; }
+        .tech-item-large svg { width: 18px; height: 18px; fill: currentColor; }
+
+        .tooltip-trigger:hover .tooltip-content { display: flex; animation: tooltip-fade 0.2s ease-out; }
+        @keyframes tooltip-fade { from { opacity: 0; transform: translateY(5px) translateX(-50%); } to { opacity: 1; transform: translateY(0) translateX(-50%); } }
+    </style>
+</head>
+<body class="bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-400 selection:bg-blue-500/30 antialiased font-sans transition-colors duration-500 min-h-screen relative">	
+	
+	<div class="fixed inset-0 pointer-events-none -z-10 bg-white dark:bg-[#050505]">
+		<div class="absolute inset-y-0 left-0 w-[30%] bg-gradient-to-r from-blue-100/30 dark:from-blue-900/10 to-transparent"></div>
+		<div class="absolute inset-y-0 right-0 w-[30%] bg-gradient-to-l from-blue-100/30 dark:from-blue-900/10 to-transparent"></div>
+	</div>
+
+	<div class="relative z-10">
+		<Header />
+
+		<main class="max-w-5xl mx-auto px-6 py-16 md:py-24">
+			
+			<section class="mb-32 opacity-0 translate-y-4 section-animate transition-all duration-700">
+				<div class="flex items-center gap-2.5 mb-8">
+					<span class="relative flex h-2 w-2">
+						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+						<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+					</span>
+					<span class="text-[10px] font-bold text-green-500 uppercase tracking-[0.2em]">Open to work</span>
+				</div>
+				<h1 class="text-6xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tighter mb-6">Michał Grecer</h1>
+				<p class="text-xl leading-relaxed text-zinc-500 dark:text-zinc-400 max-w-2xl">
+					<strong>Full-Stack Developer</strong> swobodnie poruszający się między aplikacjami mobilnymi, webowymi a światem IoT. Buduję kompletne systemy – od elektroniki po interfejs użytkownika.
+				</p>
+				<div class="flex flex-wrap gap-4 mt-8">
+					<a href="/contact" class="px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-xl hover:scale-105 transition-transform shadow-lg">Skontaktuj się</a>
+					<a href="/michal_cv.pdf" target="_blank" class="px-6 py-3 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors flex items-center gap-2">
+						<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+						Pobierz CV
+					</a>
+				</div>
+			</section>
+
+			<section class="mb-32 opacity-0 translate-y-4 section-animate transition-all duration-700">
+				<div class="flex items-center gap-3 mb-12">
+					<div class="h-px bg-zinc-200 dark:bg-zinc-800 flex-grow"></div>
+					<h2 class="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em]">O mnie</h2>
+					<div class="h-px bg-zinc-200 dark:bg-zinc-800 flex-grow"></div>
+				</div>
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+					<div class="prose dark:prose-invert text-zinc-500 dark:text-zinc-400 leading-relaxed">
+						<p class="mb-6">
+							Nie lubię szufladkowania. Zaczynałem od prostych skryptów w Pythonie, a dziś buduję złożone ekosystemy łączące <strong>Hardware, Mobile i Web</strong>. Wierzę, że prawdziwa wartość programisty objawia się tam, gdzie standardowe rozwiązania zawodzą.
+						</p>
+						<p>
+							Moje podejście jest proste: <strong>zrozumieć problem u źródła</strong>. Niezależnie czy chodzi o automatyzację procesu B2B, czy sterowanie wentylacją w oparciu o sensory IoT – dobieram technologię do problemu, a nie odwrotnie. Cenię sobie czysty kod, ale jeszcze bardziej cenię działający, stabilny produkt.
+						</p>
+					</div>
+					<div class="grid gap-4">
+						<div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-900 bg-white/50 dark:bg-zinc-900/20">
+							<h3 class="font-bold text-zinc-900 dark:text-zinc-100 mb-2">💡 Problem Solver</h3>
+							<p class="text-sm text-zinc-500">Nie tylko piszę kod. Analizuję procesy, znajduję wąskie gardła i tworzę narzędzia, które realnie oszczędzają czas i pieniądze.</p>
+						</div>
+						<div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-900 bg-white/50 dark:bg-zinc-900/20">
+							<h3 class="font-bold text-zinc-900 dark:text-zinc-100 mb-2">🔌 Hardware & Software</h3>
+							<p class="text-sm text-zinc-500">Rozumiem bity i bajty na poziomie rejestrów procesora, ale potrafię też ubrać to w nowoczesny interfejs.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="mb-32 opacity-0 translate-y-4 section-animate transition-all duration-700">
+				<div class="flex justify-between items-end mb-12 border-b border-zinc-200 dark:border-zinc-900 pb-4">
+					<h2 class="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em]">Najnowsze realizacje</h2>
+					<a href="/projects" class="text-[10px] text-zinc-400 hover:text-blue-500 uppercase tracking-widest transition-colors">Zobacz wszystkie ({Object.keys(projectFiles).length})</a>
+				</div>
+				
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+					{featuredProjects.map((project) => (
+						<button data-slug={project.slug} class="project-trigger group block h-full w-full text-left focus:outline-none rounded-3xl border border-zinc-200 dark:border-zinc-900 bg-white/50 dark:bg-zinc-900/20 overflow-hidden transition-all duration-700 hover:-translate-y-1 hover:shadow-xl">
+							{project.data.image && (
+								<div class="w-full h-48 overflow-hidden border-b border-zinc-100 dark:border-zinc-800">
+									<img src={project.data.image} alt={project.data.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+								</div>
+							)}
+							<div class="p-8">
+								<div class="flex justify-between items-start mb-4">
+									<h3 class="text-xl font-bold text-zinc-900 dark:text-zinc-200 group-hover:text-blue-400 transition-colors">{project.data.title}</h3>
+									<span class="text-xs text-zinc-400 dark:text-zinc-600 font-mono mt-1">{new Date(project.data.pubDate).getFullYear()}</span>
+								</div>
+								<p class="text-zinc-500 text-sm leading-relaxed mb-4 line-clamp-3">{project.data.description}</p>
+								
+                                <div class="flex flex-wrap gap-2 relative">
+									{project.data.tags.slice(0, 3).map((tag: string) => {
+										const tech = techMap[tag];
+										const hCol = tech ? tech.color : '#71717a';
+										return (
+											<span class="tech-item px-2.5 py-1 text-[11px] font-medium border border-zinc-200 dark:border-zinc-900 bg-white/50 dark:bg-zinc-900/30 text-zinc-600 dark:text-zinc-300 rounded-md flex items-center gap-1.5 shadow-sm" style={`--hover-color: ${hCol}`}>
+												{tech && (
+													<span class="w-3.5 h-3.5 flex items-center justify-center">
+														{tech.svg ? <Fragment set:html={tech.svg} /> : tech.iconUrl ? <span class="icon-mask w-3.5 h-3.5" style={`-webkit-mask-image: url(${tech.iconUrl}); mask-image: url(${tech.iconUrl});`} /> : <i class={`${tech.icon} text-[10px]`} />}
+													</span>
+												)}
+												{tag}
+											</span>
+										);
+									})}
+									{project.data.tags.length > 3 && (
+										<div class="tooltip-trigger relative">
+											<span class="px-2.5 py-1 text-[11px] font-medium border border-zinc-200 dark:border-zinc-900 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 rounded-md cursor-help hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">+{project.data.tags.length - 3}</span>
+											<div class="tooltip-content hidden absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-[240px] flex-wrap gap-2 p-3 bg-white dark:bg-[#1a1a1a] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl z-50 justify-center">
+                                                {project.data.tags.slice(3).map((tag: string) => {
+													const tech = techMap[tag];
+													return (
+                                                        <span class="tech-item px-2 py-1 text-[10px] border border-zinc-200 dark:border-zinc-800 rounded flex items-center gap-1.5 whitespace-nowrap" style={`--hover-color: ${tech?.color || '#71717a'}`}>
+                                                            {tech && <span class="w-3 h-3 flex items-center justify-center">{tech.svg ? <Fragment set:html={tech.svg} /> : tech.iconUrl ? <span class="icon-mask w-3 h-3" style={`-webkit-mask-image: url(${tech.iconUrl});`} /> : <i class={`${tech.icon} text-[10px]`} />}</span>}
+                                                            {tag}
+                                                        </span>
+                                                    )
+												})}
+                                                <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-1.5 border-8 border-transparent border-t-zinc-200 dark:border-t-zinc-800" />
+											</div>
+										</div>
+									)}
+								</div>
+							</div>
+						</button>
+					))}
+				</div>
+
+				{projects.map((project) => (
+					<template id={`content-${project.slug}`}>
+						<div>
+							<div id="modal-hero" class="sticky top-0 z-10 w-full overflow-hidden shrink-0 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 relative h-[250px] md:h-[400px]">
+								{project.data.image && (
+									<>
+										<div class="absolute inset-0 overflow-hidden">
+											<img src={project.data.image} class="w-full h-full object-cover blur-2xl opacity-50 dark:opacity-30 scale-110" alt=""/>
+										</div>
+										<div class="absolute inset-0 flex items-center justify-center p-6 md:p-8" id="modal-hero-main-img-container">
+											<img src={project.data.image} alt={project.data.title} class="w-auto h-full max-w-full max-h-full object-contain shadow-2xl rounded-lg"/>
+										</div>
+									</>
+								)}
+								<div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white dark:from-[#0a0a0a] via-white/60 dark:via-[#0a0a0a]/60 to-transparent z-20"></div>
+								<div class="absolute bottom-0 left-0 right-0 p-8 md:p-12 z-30">
+									<h2 class="text-3xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 drop-shadow-md tracking-tight leading-none">{project.data.title}</h2>
+                                    <span class="text-sm font-mono text-zinc-600 dark:text-zinc-300 bg-white/50 dark:bg-black/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-lg mb-1 mt-2 inline-block">{new Date(project.data.pubDate).getFullYear()}</span>
+								</div>
+							</div>
+							<div id="modal-text-content" class="bg-white dark:bg-[#0a0a0a] relative z-20 px-8 py-12 md:px-12 md:py-16 min-h-full pb-24">
+								<div class="flex flex-wrap gap-2.5 mb-10">
+									{project.data.tags?.map((tag: string) => {
+										const tech = techMap[tag];
+										const hCol = tech ? tech.color : '#60a5fa';
+										return (
+											<span class="tech-item px-3.5 py-1.5 text-xs font-semibold border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40 text-zinc-700 dark:text-zinc-200 rounded-full flex items-center gap-2.5 transition-all shadow-sm" style={`--hover-color: ${hCol}`}>
+												{tech && (
+													<span class="w-4 h-4 flex items-center justify-center">
+														{tech.svg ? <Fragment set:html={tech.svg} /> : tech.iconUrl ? <span class="icon-mask w-4 h-4" style={`-webkit-mask-image: url(${tech.iconUrl}); mask-image: url(${tech.iconUrl});`} /> : <i class={`${tech.icon} text-xs`} />}
+													</span>
+												)}
+												{tag}
+											</span>
+										);
+									})}
+								</div>
+								<div class="prose dark:prose-invert max-w-none text-zinc-600 dark:text-zinc-300 leading-relaxed text-lg"><project.Content /></div>
+								
+								{project.data.link && (
+									<div class="mt-16 pt-8 border-t border-zinc-100 dark:border-zinc-800">
+										<a href={project.data.link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg text-sm">
+                                            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                            Zobacz na GitHub
+                                        </a>
+									</div>
+								)}
+
+								{project.data.gallery && project.data.gallery.length > 0 && (
+									<div class="mt-24 pt-10 border-t border-zinc-100 dark:border-zinc-800 gallery-container" data-gallery={JSON.stringify(project.data.gallery)}>
+										<h3 class="text-xl font-bold mb-8">Galeria</h3>
+										<div class="relative w-full h-[50vh] min-h-[300px] rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 group/gallery flex items-center justify-center">
+											<img id="gallery-main-image" src={project.data.gallery[0]} class="max-w-full max-h-full object-contain transition-opacity duration-300 z-10" />
+											<button id="gallery-prev-btn" class="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/80 dark:bg-black/60 text-zinc-800 dark:text-white backdrop-blur-sm opacity-0 group-hover/gallery:opacity-100 z-20 shadow-lg transition-transform hover:scale-110">←</button>
+											<button id="gallery-next-btn" class="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/80 dark:bg-black/60 text-zinc-800 dark:text-white backdrop-blur-sm opacity-0 group-hover/gallery:opacity-100 z-20 shadow-lg transition-transform hover:scale-110">→</button>
+										</div>
+										<div id="gallery-dots" class="flex justify-center gap-3 mt-8">
+											{project.data.gallery.map((_, i) => <button class={`gallery-dot w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 0 ? 'bg-blue-500 scale-125' : 'bg-zinc-300 dark:bg-zinc-700'}`} data-index={i} />)}
+										</div>
+									</div>
+								)}
+							</div>
+						</div>
+					</template>
+				))}
+			</section>
+
+			<div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
+				<div class="lg:col-span-5 opacity-0 translate-y-4 section-animate transition-all duration-700">
+					<h2 class="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em] mb-10">Status</h2>
+					<div class="relative pl-8 border-l border-zinc-200 dark:border-zinc-900">
+						<div class="absolute w-2 h-2 bg-blue-500 rounded-full -left-[5px] top-2 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+						<h3 class="text-zinc-900 dark:text-zinc-200 font-medium text-lg">Full-Stack Software Engineer</h3>
+						<p class="text-xs text-zinc-400 dark:text-zinc-600 font-mono mb-4">2024 — Obecnie · Freelance / R&D</p>
+						<p class="text-sm text-zinc-500 leading-relaxed">
+                            Projektowanie i wdrażanie rozwiązań end-to-end: aplikacje mobilne (React Native), systemy desktopowe i integracje hardware'owe.
+                        </p>
+					</div>
+				</div>
+
+				<div class="lg:col-span-7">
+					<div class="flex justify-between items-end mb-10 opacity-0 translate-y-4 section-animate transition-all duration-700">
+						<h2 class="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em]">Preferowane technologie</h2>
+						<a href="/skills" class="text-[10px] text-zinc-400 hover:text-blue-500 uppercase tracking-widest transition-colors">Zobacz wszystkie</a>
+					</div>
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10">
+						{techStack.map((group) => (
+							<div class="opacity-0 translate-y-4 section-animate transition-all duration-700">
+								<h4 class="text-xs font-semibold text-zinc-900 dark:text-zinc-100 mb-4 border-l-2 border-blue-500 pl-3">{group.category}</h4>
+								<div class="flex flex-wrap gap-2">
+									{group.tools.map((tool: any) => (
+										<span class="tech-item tech-item-large px-3 py-1.5 text-[13px] font-medium border border-zinc-200 dark:border-zinc-900 bg-white/50 dark:bg-zinc-900/30 text-zinc-600 dark:text-zinc-300 rounded-lg flex items-center gap-2 cursor-default" style={`--hover-color: ${tool.color}`}>
+											<span class="w-[18px] h-[18px] flex items-center justify-center">
+												{tool.svg ? <Fragment set:html={tool.svg} /> : tool.iconUrl ? <span class="icon-mask w-[18px] h-[18px]" style={`-webkit-mask-image: url(${tool.iconUrl}); mask-image: url(${tool.iconUrl});`} /> : <i class={`${tool.icon} text-lg`}></i>}
+											</span>
+											{tool.name}
+										</span>
+									))}
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+
+			<div class="mt-32">
+				<Certificates />
+			</div>
+		</main>
+		<Footer />
+	</div>
+
+    <dialog id="project-modal" class="fixed inset-0 z-[200] bg-white dark:bg-[#0a0a0a] w-[95%] md:w-full max-w-4xl h-[90dvh] rounded-3xl p-0 shadow-2xl m-auto border border-zinc-200 dark:border-zinc-800 outline-none overflow-hidden">
+        <button id="close-modal" class="absolute top-4 right-4 z-[210] p-3 rounded-full bg-black/50 backdrop-blur-md text-white border border-white/10 hover:bg-black/80 transition-colors">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+        </button>
+        <div id="modal-content-container" class="w-full h-full overflow-y-auto overflow-x-hidden scroll-smooth overscroll-contain"></div>
+    </dialog>
+
+	<script is:inline>
+		const modal = document.getElementById('project-modal');
+		const closeBtn = document.getElementById('close-modal');
+		const contentContainer = document.getElementById('modal-content-container');
+		const triggers = document.querySelectorAll('.project-trigger');
+
+		const handleModalScroll = () => {
+			window.requestAnimationFrame(() => {
+				const hero = document.getElementById('modal-hero');
+				const imgCont = document.getElementById('modal-hero-main-img-container'); 
+				if (!hero) return;
+				const st = contentContainer.scrollTop;
+				const maxH = window.innerWidth < 768 ? 250 : 400;
+				let nH = maxH - st;
+				hero.style.height = `${nH < 120 ? 120 : nH}px`;
+				if (imgCont) {
+					let op = 1 - (st / (maxH / 1.5));
+					imgCont.style.opacity = op < 0 ? 0 : op;
+					imgCont.style.transform = `translateY(${st * 0.35}px)`;
+                    imgCont.style.display = op <= 0 ? 'none' : 'flex';
+				}
+			});
+		};
+
+		const setupGallery = () => {
+			const container = contentContainer.querySelector('.gallery-container');
+			if (!container) return;
+			const images = JSON.parse(container.getAttribute('data-gallery') || '[]');
+			const mainImage = container.querySelector('#gallery-main-image');
+			const prevBtn = container.querySelector('#gallery-prev-btn');
+			const nextBtn = container.querySelector('#gallery-next-btn');
+			const dots = container.querySelectorAll('.gallery-dot');
+			let current = 0;
+
+			const update = (idx) => {
+				current = idx;
+				mainImage.style.opacity = '0';
+				setTimeout(() => {
+					mainImage.src = images[current];
+					mainImage.style.opacity = '1';
+				}, 200);
+				dots.forEach((dot, i) => {
+					dot.classList.toggle('bg-blue-500', i === current);
+					dot.classList.toggle('scale-125', i === current);
+					dot.classList.toggle('bg-zinc-300', i !== current);
+					dot.classList.toggle('dark:bg-zinc-700', i !== current);
+				});
+			};
+
+			if (prevBtn) prevBtn.onclick = (e) => { e.stopPropagation(); update((current - 1 + images.length) % images.length); };
+			if (nextBtn) nextBtn.onclick = (e) => { e.stopPropagation(); update((current + 1) % images.length); };
+			dots.forEach(dot => { dot.onclick = () => update(parseInt(dot.getAttribute('data-index'))); });
+            if(dots.length > 0) update(0);
+		};
+
+		triggers.forEach(trigger => {
+			trigger.addEventListener('click', () => {
+				const slug = trigger.getAttribute('data-slug');
+				const template = document.getElementById(`content-${slug}`);
+				if (template) {
+					contentContainer.innerHTML = '';
+					contentContainer.appendChild(template.content.cloneNode(true));
+					modal.showModal();
+					document.body.classList.add('modal-open');
+					contentContainer.scrollTop = 0;
+					handleModalScroll();
+					contentContainer.onscroll = handleModalScroll;
+					setupGallery();
+					requestAnimationFrame(() => { 
+                        contentContainer.scrollTop = 0; 
+                        handleModalScroll(); 
+                    });
+				}
+			});
+		});
+
+		const closeModal = () => { modal.close(); document.body.classList.remove('modal-open'); };
+		closeBtn.onclick = closeModal;
+		modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+
+		const observer = new IntersectionObserver(entries => {
+			entries.forEach(entry => { 
+				if (entry.isIntersecting) { 
+                    entry.target.style.opacity = "1"; 
+                    entry.target.style.transform = "translateY(0)"; 
+                    observer.unobserve(entry.target); 
+                }
+			});
+		}, { threshold: 0.1 });
+		document.querySelectorAll('.section-animate').forEach(el => observer.observe(el));
+	</script>
+</body>
+</html>

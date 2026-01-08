@@ -1,0 +1,153 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+
+const contactData = [
+  {
+    name: "Email",
+    value: "michallvx@gmail.com",
+    label: "Wyślij wiadomość",
+    link: "mailto:michallvx@gmail.com",
+    color: "#3b82f6", // Blue-500
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>`
+  },
+  {
+    name: "LinkedIn",
+    value: "https://www.linkedin.com/in/michał-grecer/",
+    label: "Zobacz profil",
+    link: "https://www.linkedin.com/in/michał-grecer/",
+    color: "#0077b5",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>`
+  },
+  {
+    name: "GitHub",
+    value: "https://github.com/MichalGrecer",
+    label: "Sprawdź kod",
+    link: "https://github.com/MichalGrecer",
+    color: "#333",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>`
+  }
+];
+---
+
+<!doctype html>
+<html lang="pl">
+<head>
+	<BaseHead title={`Kontakt | ${SITE_TITLE}`} description="Skontaktuj się ze mną w sprawie projektów IoT, webowych i mobilnych." />
+    <style>
+        .contact-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .contact-card:hover {
+            border-color: var(--hover-color) !important;
+            background-color: color-mix(in srgb, var(--hover-color), transparent 95%) !important;
+            transform: translateY(-2px);
+        }
+        /* Specjalny hover dla GitHub w dark mode */
+        html.dark .contact-card[data-name="GitHub"]:hover {
+            border-color: #ffffff !important;
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-400 selection:bg-blue-500/30 antialiased font-sans transition-colors duration-500 min-h-screen relative">	
+	
+	<div class="fixed inset-0 pointer-events-none overflow-hidden -z-10 bg-white dark:bg-[#050505]">
+		<div class="absolute inset-0 dark:hidden">
+			<div class="absolute inset-y-0 left-0 w-[30%] bg-gradient-to-r from-blue-100/30 to-transparent"></div>
+			<div class="absolute inset-y-0 right-0 w-[30%] bg-gradient-to-l from-blue-100/30 to-transparent"></div>
+		</div>
+		<div class="absolute inset-0 hidden dark:block">
+			<div class="absolute inset-y-0 left-0 w-[30%] bg-gradient-to-r from-blue-900/10 to-transparent"></div>
+			<div class="absolute inset-y-0 right-0 w-[30%] bg-gradient-to-l from-blue-900/10 to-transparent"></div>
+		</div>
+	</div>
+
+	<div class="relative z-10">
+		<Header />
+
+		<main class="max-w-5xl mx-auto px-6 py-16 md:py-24">
+			
+			<header class="mb-16 opacity-0 translate-y-4 transition-all duration-700 ease-out section-animate">
+				<div class="flex items-center gap-2.5 mb-8">
+					<span class="relative flex h-2 w-2">
+						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+						<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+					</span>
+					<span class="text-[10px] font-bold text-green-500 uppercase tracking-[0.2em]">Dostępny do współpracy</span>
+				</div>
+				<h1 class="text-5xl md:text-6xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tighter mb-6">
+					Porozmawiajmy
+				</h1>
+				<p class="text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl leading-relaxed">
+					Szukasz dewelopera, który rozumie zarówno <strong>software, jak i hardware</strong>? Napisz do mnie – chętnie pomogę w realizacji projektów IoT, aplikacji mobilnych lub systemów webowych.
+				</p>
+			</header>
+
+			<div class="grid gap-6 max-w-4xl opacity-0 translate-y-4 transition-all duration-700 section-animate">
+				{contactData.map((item) => (
+					<a 
+                        href={item.link}
+                        target="_blank"
+                        class="contact-card group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/20 backdrop-blur-sm"
+                        style={`--hover-color: ${item.color}`}
+                        data-name={item.name}
+                    >
+						<div class="flex items-center gap-6">
+							<div class="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 group-hover:bg-white dark:group-hover:bg-black group-hover:text-blue-500 transition-all shadow-sm" set:html={item.icon} />
+							
+							<div class="flex flex-col">
+								<h2 class="text-lg font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1">
+									{item.name}
+								</h2>
+								<p class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+									{item.value}
+								</p>
+							</div>
+						</div>
+
+						<div class="w-full sm:w-auto">
+							<div class="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-xl group-hover:scale-105 transition-transform">
+								{item.label}
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+							</div>
+						</div>
+					</a>
+				))}
+			</div>
+
+            <footer class="mt-20 opacity-0 translate-y-4 transition-all duration-700 section-animate">
+                <p class="text-zinc-400 text-sm font-mono uppercase tracking-widest">
+                    Lokalizacja: Gliwice / Zdalnie
+                </p>
+            </footer>
+		</main>
+
+		<Footer />
+	</div>
+
+	<script is:inline>
+		const observer = new IntersectionObserver(
+			entries => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('is-visible');
+						observer.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.1 }
+		);
+		document.querySelectorAll('.section-animate').forEach(el => observer.observe(el));
+	</script>
+
+	<style is:global>
+		.is-visible {
+			opacity: 1 !important;
+			transform: translateY(0) !important;
+		}
+	</style>
+</body>
+</html>

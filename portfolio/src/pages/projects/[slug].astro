@@ -1,0 +1,112 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+// 1. getStaticPaths MUSI być samodzielna
+export function getStaticPaths() {
+  const projectFiles = import.meta.glob('../../content/projects/*.md', {
+    eager: true,
+  });
+
+  return Object.keys(projectFiles).map((path) => {
+    const slug = path.split('/').pop().replace('.md', '');
+    return {
+      params: { slug },
+    };
+  });
+}
+
+// 2. Dla renderu strony znowu ładujemy pliki
+const projectFiles = import.meta.glob('../../content/projects/*.md', {
+  eager: true,
+});
+
+const { slug } = Astro.params;
+
+const entry = Object.entries(projectFiles).find(([path]) =>
+  path.endsWith(`/${slug}.md`)
+);
+
+if (!entry) {
+  throw new Error(`Project not found: ${slug}`);
+}
+
+const [, project]: any = entry;
+const { frontmatter } = project;
+const Content = project.default;
+---
+
+<!doctype html>
+<html lang="pl">
+	<head>
+		<BaseHead
+			title={`${frontmatter.title} | Michał`}
+			description={frontmatter.description}
+		/>
+	</head>
+	<body class="bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-400 selection:bg-blue-500/30 antialiased font-sans transition-colors duration-500 min-h-screen relative">
+
+		<div class="fixed inset-0 pointer-events-none overflow-hidden -z-10 bg-white dark:bg-[#050505]">
+			<div class="absolute inset-0 dark:hidden">
+				<div class="absolute inset-y-0 left-0 w-[30%] bg-gradient-to-r from-blue-100/30 to-transparent"></div>
+				<div class="absolute inset-y-0 right-0 w-[30%] bg-gradient-to-l from-blue-100/30 to-transparent"></div>
+				<div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-blue-50/50 to-transparent"></div>
+			</div>
+			<div class="absolute inset-0 hidden dark:block">
+				<div class="absolute inset-y-0 left-0 w-[30%] bg-gradient-to-r from-blue-900/10 to-transparent"></div>
+				<div class="absolute inset-y-0 right-0 w-[30%] bg-gradient-to-l from-blue-900/10 to-transparent"></div>
+				<div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-blue-500/5 to-transparent"></div>
+			</div>
+		</div>
+
+		<div class="relative z-10">
+			<Header />
+
+			<main class="max-w-5xl mx-auto px-6 py-16 md:py-24">
+				<a
+					href="/projects"
+					class="inline-flex items-center text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-blue-500 transition-colors mb-12 group"
+				>
+					← Wróć do projektów
+				</a>
+
+				<header class="mb-16">
+					<div class="flex flex-wrap gap-2 mb-6">
+						{frontmatter.tags?.map((tag: string) => (
+							<span class="text-[10px] font-mono text-blue-500 dark:text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded uppercase tracking-wider">
+								{tag}
+							</span>
+						))}
+					</div>
+
+					<h1 class="text-5xl md:text-6xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tighter mb-6">
+						{frontmatter.title}
+					</h1>
+
+					<p class="text-xl text-zinc-500 dark:text-zinc-400 max-w-3xl leading-relaxed">
+						{frontmatter.description}
+					</p>
+				</header>
+
+				<article class="prose prose-zinc dark:prose-invert prose-lg max-w-none">
+					<Content />
+				</article>
+
+				{frontmatter.link && (
+					<div class="mt-24 pt-12 border-t border-zinc-200 dark:border-zinc-900 text-center">
+						<a
+							href={frontmatter.link}
+							target="_blank"
+							class="inline-block px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold rounded-xl hover:scale-105 transition-transform"
+						>
+							Zobacz projekt na żywo
+						</a>
+					</div>
+				)}
+			</main>
+
+			<Footer />
+		</div>
+	</body>
+</html>

@@ -1,0 +1,217 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+import Certificates from '../components/Certificates.astro';
+import { techStack } from '../data/techData';
+
+const allSkills = techStack.flatMap(category => 
+    category.tools.map(tool => ({
+        ...tool,
+        category: category.category
+    }))
+);
+
+const categories = [
+    { id: "all", label: "Wszystkie" },
+    { id: "iot", label: "IoT & Embedded" },
+    { id: "backend", label: "Backend" },
+    { id: "frontend", label: "Frontend & Mobile" },
+    { id: "database", label: "Bazy Danych" },
+    { id: "tools", label: "Narzędzia" },
+    { id: "future", label: "Planuję się nauczyć", special: true }
+];
+---
+
+<!doctype html>
+<html lang="pl">
+<head>
+    <BaseHead title={`Umiejętności | ${SITE_TITLE}`} description="Szczegółowy stack technologiczny i doświadczenie techniczne." />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.16.0/devicon.min.css">
+    <style>
+        .skill-card { transition: all 0.3s ease; }
+        .skill-card:hover {
+            border-color: var(--hover-color) !important;
+            background-color: color-mix(in srgb, var(--hover-color), transparent 95%) !important;
+        }
+        .skill-card:hover h3 { color: var(--hover-color) !important; }
+
+        html.dark .skill-card[style*="#000000"]:hover {
+            border-color: #ffffff !important;
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        html.dark .skill-card[style*="#000000"]:hover h3 { color: #ffffff !important; }
+        
+        .icon-mask {
+            background-color: currentColor;
+            mask-size: contain; mask-repeat: no-repeat; mask-position: center;
+            -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; -webkit-mask-position: center;
+        }
+        
+        .fade-in-up { animation: fadeInUp 0.4s ease-out forwards; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filter-btn-future { border-style: dashed !important; }
+        .filter-btn-future:hover { border-style: solid !important; border-color: #3b82f6 !important; color: #3b82f6 !important; }
+        .filter-btn-future.active {
+            border-style: solid !important; background-color: #3b82f6 !important;
+            color: white !important; border-color: #3b82f6 !important;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-400 selection:bg-blue-500/30 antialiased font-sans transition-colors duration-500 min-h-screen relative">    
+    
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10 bg-white dark:bg-[#050505]">
+        <div class="absolute inset-0 dark:hidden">
+            <div class="absolute inset-y-0 left-0 w-[30%] bg-gradient-to-r from-blue-100/30 to-transparent"></div>
+            <div class="absolute inset-y-0 right-0 w-[30%] bg-gradient-to-l from-blue-100/30 to-transparent"></div>
+        </div>
+        <div class="absolute inset-0 hidden dark:block">
+            <div class="absolute inset-y-0 left-0 w-[30%] bg-gradient-to-r from-blue-900/10 to-transparent"></div>
+            <div class="absolute inset-y-0 right-0 w-[30%] bg-gradient-to-l from-blue-900/10 to-transparent"></div>
+        </div>
+    </div>
+
+    <div class="relative z-10">
+        <Header />
+
+        <main class="max-w-5xl mx-auto px-6 py-16 md:py-24">
+            
+            <header class="mb-16 opacity-0 translate-y-4 transition-all duration-700 ease-out section-animate">
+                <h1 class="text-5xl md:text-6xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tighter mb-6">Umiejętności</h1>
+                <p class="text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl leading-relaxed">
+                    Zbiór technologii, w których buduję rozwiązania hardware'owe i software'owe. Skupiam się na wydajności, typowaniu i optymalizacji procesów.
+                </p>
+            </header>
+
+            <div class="mb-12 flex flex-wrap gap-2 opacity-0 translate-y-4 transition-all duration-700 ease-out section-animate" id="skills-filter">
+                {categories.map((cat, index) => (
+                    <button 
+                        data-category={cat.id}
+                        class={`filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border 
+                        ${cat.special ? 'filter-btn-future bg-white dark:bg-zinc-900 text-zinc-500 border-zinc-300 dark:border-zinc-700' : 
+                          index === 0 ? 'bg-zinc-900 dark:bg-white text-white dark:text-black border-transparent active-cat' : 
+                          'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600'}`}
+                    >
+                        {cat.label}
+                    </button>
+                ))}
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 opacity-0 translate-y-4 transition-all duration-700 ease-out section-animate" id="skills-grid">
+                {allSkills.map((skill) => (
+                    <div 
+                        class="skill-card group relative p-4 md:p-6 rounded-2xl border border-zinc-200 dark:border-zinc-900 bg-white/50 dark:bg-zinc-900/20 backdrop-blur-sm"
+                        data-category={skill.category}
+                        style={`--hover-color: ${skill.color}`}
+                    >
+                        <div class="flex items-center gap-3 md:gap-4 mb-2 md:mb-4">
+                            <div class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 group-hover:bg-white dark:group-hover:bg-black transition-colors shadow-sm">
+                                {skill.svg ? (
+                                    <span class="w-5 h-5 md:w-6 md:h-6 flex items-center justify-center" set:html={skill.svg} />
+                                ) : skill.iconUrl ? (
+                                    <span 
+                                        class="icon-mask w-5 h-5 md:w-6 md:h-6" 
+                                        style={`-webkit-mask-image: url(${skill.iconUrl}); mask-image: url(${skill.iconUrl});`}
+                                    ></span>
+                                ) : (
+                                    <i class={`${skill.icon} text-xl md:text-2xl`}></i>
+                                )}
+                            </div>
+                            <h3 class="font-bold text-sm md:text-lg text-zinc-900 dark:text-zinc-200 transition-colors truncate">
+                                {skill.name}
+                            </h3>
+                        </div>
+                        <p class="hidden md:block text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                            {skill.detail}
+                        </p>
+                    </div>
+                ))}
+            </div>
+
+            <div class="mt-32">
+                <Certificates />
+            </div>
+        </main>
+
+        <Footer />
+    </div>
+
+    <script is:inline>
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+        document.querySelectorAll('.section-animate').forEach(el => observer.observe(el));
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const skillCards = document.querySelectorAll('.skill-card');
+
+        const initFilters = () => {
+            skillCards.forEach(card => {
+                if (card.getAttribute('data-category') === 'future') {
+                    card.style.display = 'none';
+                }
+            });
+        };
+        initFilters();
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.getAttribute('data-category');
+                const isFutureBtn = category === 'future';
+
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-zinc-900', 'dark:bg-white', 'text-white', 'dark:text-black', 'border-transparent', 'active-cat', 'active');
+                    b.classList.add('bg-white', 'dark:bg-zinc-900', 'text-zinc-600', 'dark:text-zinc-400', 'border-zinc-200', 'dark:border-zinc-800');
+                });
+                
+                if (isFutureBtn) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('bg-white', 'dark:bg-zinc-900', 'text-zinc-600', 'dark:text-zinc-400', 'border-zinc-200', 'dark:border-zinc-800');
+                    btn.classList.add('bg-zinc-900', 'dark:bg-white', 'text-white', 'dark:text-black', 'border-transparent', 'active-cat');
+                }
+
+                skillCards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    const isFutureCard = cardCategory === 'future';
+                    
+                    card.classList.remove('fade-in-up');
+                    void card.offsetWidth;
+
+                    let shouldShow = false;
+
+                    if (category === 'all') {
+                        if (!isFutureCard) shouldShow = true;
+                    } else {
+                        if (cardCategory === category) shouldShow = true;
+                    }
+
+                    if (shouldShow) {
+                        card.style.display = 'block';
+                        card.classList.add('fade-in-up');
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style is:global>
+        .is-visible { opacity: 1 !important; transform: translateY(0) !important; }
+    </style>
+</body>
+</html>
