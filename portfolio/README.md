@@ -1,62 +1,73 @@
-# Astro Starter Kit: Blog
+# Personal Portfolio Website
 
-```sh
-npm create astro@latest -- --template blog
-```
+## Overview
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+This is a personal portfolio website engineered for high performance and deep mobile optimization. Built with **Astro**, it utilizes a static site generation approach to ensure near-zero client-side JavaScript delivery while maintaining a rich, interactive user experience.
 
-Features:
+The site is designed with a **Mobile-First** philosophy, specifically addressing common layout issues on iOS devices through advanced CSS and JavaScript techniques.
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+![Portfolio Preview](./public/images/projects/portfolio6.png)
+![Portfolio Preview](./public/images/projects/portfolio7.png)
+![Portfolio Preview](./public/images/projects/portfolio5.png)
+![Portfolio Preview](./public/images/projects/portfolio3.png)
+![Portfolio Preview](./public/images/projects/portfolio4.png)
+![Portfolio Preview](./public/images/projects/portfolio2.png)
+![Portfolio Preview](./public/images/projects/portfolio.png)
 
-## 🚀 Project Structure
+## Key Features
 
-Inside of your Astro project, you'll see the following folders and files:
+* **Astro Islands Architecture**: Leverages Astro for optimal performance and extremely fast loading times through pre-rendering.
+* **iOS/Safari Optimization**: Deeply optimized for mobile browsers, featuring **Dynamic Viewport Height (dvh)** for stable layouts and **Safe Area** handling for device notches.
+* **Centralized Tech Mapping**: A custom-built `techMap` system that manages technology icons (SVG/DevIcons) and brand colors from a single data source.
+* **Interactive Modal System**: Custom project details view built with the HTML `<dialog>` element, including background scroll locking and smooth transitions.
+* **Dynamic Image Gallery**: Interactive project galleries with loader states and responsive image handling.
+* **Dark Mode Support**: Seamless integration of light and dark themes with fluid color transitions via Tailwind CSS.
 
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
+## Technologies Used
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+### Frontend Technologies
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+* **Framework**: [Astro](https://astro.build/) - For high-performance static site generation.
+* **Styling**: [Tailwind CSS](https://tailwindcss.com/) - For modern, utility-first styling and glassmorphism effects.
+* **Language**: [TypeScript](https://www.typescriptlang.org/) - For type-safe logic and data management.
+* **Content**: [Markdown](https://daringfireball.net/projects/markdown/) - To manage project data and professional experience.
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+### Tools & Assets
 
-Any static assets, like images, can be placed in the `public/` directory.
+* **DevIcons**: For industry-standard technology branding.
+* **Zod**: For strict validation of project and experience data schemas.
 
-## 🧞 Commands
+## Getting Started
 
-All commands are run from the root of the project, from a terminal:
+### Prerequisites
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+* **Node.js** (v18.0 or higher recommended)
+* **npm** (Node Package Manager)
 
-## 👀 Want to learn more?
+### Installation and Setup
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/MichalGrecer/portfolio.git
+    ```
 
-## Credit
+2.  **Navigate to the project directory**:
+    ```bash
+    cd portfolio
+    ```
 
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+3.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+4.  **Start the development server**:
+    ```bash
+    npm run dev
+    ```
+
+5.  **Build for production**:
+    ```bash
+    npm run build
+    ```
+
