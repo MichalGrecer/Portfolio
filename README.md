@@ -6,13 +6,13 @@ This is a personal portfolio website engineered for high performance and deep mo
 
 The site is designed with a **Mobile-First** philosophy, specifically addressing common layout issues on iOS devices through advanced CSS and JavaScript techniques.
 
-![Portfolio Preview](./public/images/projects/portfolio6.png)
-![Portfolio Preview](./public/images/projects/portfolio7.png)
-![Portfolio Preview](./public/images/projects/portfolio5.png)
-![Portfolio Preview](./public/images/projects/portfolio3.png)
-![Portfolio Preview](./public/images/projects/portfolio4.png)
-![Portfolio Preview](./public/images/projects/portfolio2.png)
-![Portfolio Preview](./public/images/projects/portfolio.png)
+![Portfolio Preview](./portfolio/public/images/projects/portfolio6.png)
+![Portfolio Preview](./portfolio/public/images/projects/portfolio7.png)
+![Portfolio Preview](./portfolio/public/images/projects/portfolio5.png)
+![Portfolio Preview](./portfolio/public/images/projects/portfolio3.png)
+![Portfolio Preview](./portfolio/public/images/projects/portfolio4.png)
+![Portfolio Preview](./portfolio/public/images/projects/portfolio2.png)
+![Portfolio Preview](./portfolio/public/images/projects/portfolio.png)
 
 ## Key Features
 
