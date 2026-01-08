@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Certificates from '../components/Certificates.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { techMap } from '../data/techData'; // IMPORT CENTRALNY
+import { techMap } from '../data/techData';
 
 const projectFiles = import.meta.glob('../content/projects/*.md', {
   eager: true,
@@ -18,7 +18,7 @@ const projects = Object.entries(projectFiles)
   }))
   .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
 
-// Wyświetlamy 4 najnowsze projekty na głównej
+
 const featuredProjects = projects.slice(0, 4);
 
 const techStack = [

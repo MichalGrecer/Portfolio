@@ -101,17 +101,17 @@ const navLinks = [
       }
     }
 
-    // Usuwamy stare listenery (jeśli istnieją) i dodajemy nowe
+    
     openBtn.onclick = () => toggleMenu(true);
     closeBtn.onclick = () => toggleMenu(false);
 
-    // Obsługa kliknięcia w linki (zamykanie menu)
+   
     const links = document.querySelectorAll('.mobile-nav-link');
     links.forEach(link => {
       link.onclick = () => toggleMenu(false);
     });
 
-    // Logika motywu
+   
     const themeBtn = document.getElementById('theme-toggle');
     if (themeBtn) {
       themeBtn.onclick = () => {
@@ -123,9 +123,7 @@ const navLinks = [
     }
   }
 
-  // Inicjalizacja przy pierwszym załadowaniu
+  
   initHeader();
-
-  // Re-inicjalizacja po każdej zmianie strony (ważne przy View Transitions)
   document.addEventListener('astro:page-load', initHeader);
 </script>
