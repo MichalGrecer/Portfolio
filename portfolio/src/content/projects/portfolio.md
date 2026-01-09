@@ -4,7 +4,7 @@ description: "Projekt i implementacja nowoczesnej, w pełni responsywnej wizytó
 pubDate: 2026-01-07
 image: "/images/projects/portfolio6.png"
 tags: ["Astro", "Tailwind", "TypeScript", "JavaScript", "Git"]
-link: "https://github.com/TwojUser/TwojeRepo"
+link: "https://github.com/MichalGrecer/Portfolio"
 gallery:
   - "/images/projects/portfolio6.png"
   - "/images/projects/portfolio7.png"
