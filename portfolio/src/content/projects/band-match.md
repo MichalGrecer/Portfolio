@@ -53,7 +53,7 @@ BandMate to ambitny projekt mający na celu rozwiązanie problemów z komunikacj
 * **Przechowywanie danych**: Wykorzystanie **Multer** do zarządzania wieloma strumieniami zapisu plików (avatary, posty, wiadomości).
 * **Frontend**: React z Tailwind CSS, wykorzystujący architekturę komponentową i wzorce **Optimistic UI**.
 
-## 🗺️ Dalsze plany (Roadmap)
+##  Dalsze plany
 1. **Rozbudowa Band Space**: Wprowadzenie wspólnego repozytorium plików (nuty, dema) oraz kalendarza prób dla członków zespołów.
 2. **System Zaproszeń**: Finalizacja modułu rekrutacyjnego pozwalającego liderom na formalne zarządzanie składem zespołu.
 3. **Powiadomienia Push**: Integracja z Service Workers dla powiadomień poza otwartą kartą przeglądarki.
