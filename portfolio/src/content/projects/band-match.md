@@ -6,9 +6,22 @@ tags: ["React", "Socket.io", "Prisma", "PostgreSQL", "Node.js"]
 link: "https://github.com/MichalGrecer/BandMate"
 image: "/images/projects/bandmate-main.png"
 gallery:
-  - "/images/projects/bandmate-map.png"
-  - "/images/projects/bandmate-chat.png"
-  - "/images/projects/bandmate-feed.png"
+  - "/images/projects/bandmate.png"
+  - "/images/projects/bandmate2.png"
+  - "/images/projects/bandmate3.png"
+  - "/images/projects/bandmate4.png"
+  - "/images/projects/bandmate5.png"
+  - "/images/projects/bandmate6.png"
+  - "/images/projects/bandmate7.png"
+  - "/images/projects/bandmate8.png"
+  - "/images/projects/bandmate9.png"
+  - "/images/projects/bandmate10.png"
+  - "/images/projects/bandmate11.png"
+  - "/images/projects/bandmate12.png"
+  - "/images/projects/bandmate13.png"
+  - "/images/projects/bandmate14.png"
+  - "/images/projects/bandmate15.png"
+  - "/images/projects/bandmate16.png"
 ---
 
 ## Status Projektu:  W trakcie realizacji
