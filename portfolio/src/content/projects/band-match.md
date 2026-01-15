@@ -1,5 +1,5 @@
 ---
-title: "BandMate – Platforma Społecznościowa dla Muzyków"
+title: "BandMate"
 description: "Projekt w fazie aktywnego rozwoju (WIP). Kompleksowy ekosystem Full-Stack łączący muzyków, umożliwiający budowanie zespołów przez geolokalizację oraz komunikację w czasie rzeczywistym."
 pubDate: "2026-01-15"
 tags: ["React", "Socket.io", "Prisma", "PostgreSQL", "Node.js", "Express.js", "TypeScript", "Tailwind"]

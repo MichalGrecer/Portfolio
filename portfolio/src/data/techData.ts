@@ -18,7 +18,7 @@ export const techStack = [
     tools: [
       { name: "Python", icon: "devicon-python-plain", color: "#3776AB" },
       { name: "Node.js", icon: "devicon-nodejs-plain", color: "#339933" },
-      { name: "Socket.io", icon: "devicon-socketio-original", color: "#010101" },
+      { name: "Socket.io", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/socketdotio/white" },
       { name: "FastAPI", icon: "devicon-fastapi-plain", color: "#009688" },
       { name: "Pandas", icon: "devicon-pandas-plain", color: "#150458" },
       { name: "NumPy", icon: "devicon-numpy-plain", color: "#013243" },
