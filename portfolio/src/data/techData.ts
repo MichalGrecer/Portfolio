@@ -70,7 +70,7 @@ export const techStack = [
     tools: [
       { name: "Next.js", icon: "devicon-nextjs-plain", color: "#000000" },
       { name: "Go", icon: "devicon-go-original-wordmark", color: "#00ADD8" },
-      { name: "Express.js", icon: "devicon-express-original", color: "#000000" },
+      { name: "Express.js", color: "#ffffff", iconUrl: "https://cdn.simpleicons.org/express/white" },
       { name: "NestJS", icon: "devicon-nestjs-plain", color: "#E0234E" },
       { name: "AWS", icon: "devicon-amazonwebservices-plain-wordmark", color: "#232F3E" },
     ] 
