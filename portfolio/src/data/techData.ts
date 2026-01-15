@@ -18,6 +18,7 @@ export const techStack = [
     tools: [
       { name: "Python", icon: "devicon-python-plain", color: "#3776AB" },
       { name: "Node.js", icon: "devicon-nodejs-plain", color: "#339933" },
+      { name: "Socket.io", icon: "devicon-socketio-original", color: "#010101" },
       { name: "FastAPI", icon: "devicon-fastapi-plain", color: "#009688" },
       { name: "Pandas", icon: "devicon-pandas-plain", color: "#150458" },
       { name: "NumPy", icon: "devicon-numpy-plain", color: "#013243" },
@@ -29,6 +30,7 @@ export const techStack = [
     category: "frontend", 
     categoryLabel: "Frontend & Mobile",
     tools: [
+      { name: "React", icon: "devicon-react-original", color: "#61DAFB" },
       { name: "React Native", icon: "devicon-react-original", color: "#61DAFB" },
       { name: "Expo", color: "#000000", iconUrl: "https://cdn.simpleicons.org/expo" },
       { name: "TypeScript", icon: "devicon-typescript-plain", color: "#3178C6" },
@@ -36,7 +38,8 @@ export const techStack = [
       { name: "HTML5", icon: "devicon-html5-plain", color: "#E34F26" },
       { name: "CSS3", icon: "devicon-css3-plain", color: "#1572B6" },
       { name: "Astro", icon: "devicon-astro-plain", color: "#FF5D01" },
-      { name: "Tailwind", icon: "devicon-tailwindcss-original", color: "#06B6D4" }
+      { name: "Tailwind", icon: "devicon-tailwindcss-original", color: "#06B6D4" },
+      { name: "Leaflet", icon: "devicon-leaflet-plain", color: "#199900" },
     ] 
   },
   { 
@@ -44,6 +47,7 @@ export const techStack = [
     categoryLabel: "Bazy Danych",
     tools: [
       { name: "PostgreSQL", icon: "devicon-postgresql-plain", color: "#336791" },
+      { name: "Prisma", icon: "devicon-prisma-original", color: "#2D3748" },
       { name: "Redis", icon: "devicon-redis-plain", color: "#DC382D" },
       { name: "SQLAlchemy", icon: "devicon-sqlalchemy-plain", color: "#D71F00" }
     ] 
@@ -69,7 +73,6 @@ export const techStack = [
       { name: "Express.js", icon: "devicon-express-original", color: "#000000" },
       { name: "NestJS", icon: "devicon-nestjs-plain", color: "#E0234E" },
       { name: "AWS", icon: "devicon-amazonwebservices-plain-wordmark", color: "#232F3E" },
-      { name: "Prisma", icon: "devicon-prisma-original", color: "#2D3748" }
     ] 
   }
 ];
